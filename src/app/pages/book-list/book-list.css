@@ -120,6 +120,11 @@ table {
   border-radius: 4px;
 }
 
+.actions-column {
+  width: 120px;
+  text-align: center;
+}
+
 tr.mat-mdc-row:hover {
   background-color: var(--mat-sys-surface-container-low);
 }

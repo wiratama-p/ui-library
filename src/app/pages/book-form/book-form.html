@@ -1,0 +1,99 @@
+<div class="book-form-container">
+  <div class="page-header">
+    <h1>{{ isEditMode() ? 'Edit Book' : 'Create New Book' }}</h1>
+    <p class="subtitle">
+      {{ isEditMode() ? 'Update book information' : 'Add a new book to the collection' }}
+    </p>
+  </div>
+
+  @if (loading() && isEditMode()) {
+    <div class="loading-container">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Loading book...</p>
+    </div>
+  } @else {
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <form [formGroup]="bookForm" (ngSubmit)="onSubmit()" class="book-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title" placeholder="Enter book title" />
+            @if (bookForm.get('title')?.touched && bookForm.get('title')?.errors) {
+              <mat-error>{{ getErrorMessage('title') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Author</mat-label>
+            <input matInput formControlName="author" placeholder="Enter author name" />
+            @if (bookForm.get('author')?.touched && bookForm.get('author')?.errors) {
+              <mat-error>{{ getErrorMessage('author') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Publication Year</mat-label>
+              <input
+                matInput
+                formControlName="publicationYear"
+                placeholder="e.g., 2024"
+                maxlength="4"
+              />
+              @if (bookForm.get('publicationYear')?.touched && bookForm.get('publicationYear')?.errors) {
+                <mat-error>{{ getErrorMessage('publicationYear') }}</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Genre</mat-label>
+              <input matInput formControlName="genre" placeholder="Enter genre" />
+              @if (bookForm.get('genre')?.touched && bookForm.get('genre')?.errors) {
+                <mat-error>{{ getErrorMessage('genre') }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline">
+            <mat-label>ISBN</mat-label>
+            <input
+              matInput
+              formControlName="isbn"
+              placeholder="Enter 13-digit ISBN (978 or 979)"
+              maxlength="13"
+            />
+            <mat-hint>13 digits starting with 978 or 979, no dashes</mat-hint>
+            @if (bookForm.get('isbn')?.touched && bookForm.get('isbn')?.errors) {
+              <mat-error>{{ getErrorMessage('isbn') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Description (Optional)</mat-label>
+            <textarea
+              matInput
+              formControlName="description"
+              placeholder="Enter book description"
+              rows="4"
+            ></textarea>
+            @if (bookForm.get('description')?.touched && bookForm.get('description')?.errors) {
+              <mat-error>{{ getErrorMessage('description') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button type="button" mat-stroked-button (click)="onCancel()" [disabled]="loading()">
+              Cancel
+            </button>
+            <button type="submit" mat-raised-button color="primary" [disabled]="loading()">
+              @if (loading()) {
+                <mat-spinner diameter="20"></mat-spinner>
+              }
+              {{ isEditMode() ? 'Update Book' : 'Create Book' }}
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

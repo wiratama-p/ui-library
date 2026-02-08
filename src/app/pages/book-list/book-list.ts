@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -9,10 +10,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book.model';
 import { TruncatePipe } from '../../pipes/truncate.pipe';
+import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-book-list',
@@ -34,6 +38,9 @@ import { TruncatePipe } from '../../pipes/truncate.pipe';
 })
 export class BookList implements OnInit, OnDestroy {
   private readonly bookService = inject(BookService);
+  private readonly router = inject(Router);
+  private readonly snackBar = inject(MatSnackBar);
+  private readonly dialog = inject(MatDialog);
   private readonly destroy$ = new Subject<void>();
 
   protected readonly books = signal<Book[]>([]);
@@ -48,6 +55,7 @@ export class BookList implements OnInit, OnDestroy {
     'genre',
     'publicationYear',
     'description',
+    'actions',
   ];
 
   ngOnInit(): void {
@@ -95,5 +103,39 @@ export class BookList implements OnInit, OnDestroy {
 
   protected clearSearch(): void {
     this.searchControl.setValue('');
+  }
+
+  protected createBook(): void {
+    this.router.navigate(['/books/new']);
+  }
+
+  protected editBook(book: Book): void {
+    this.router.navigate(['/books/edit', book.id]);
+  }
+
+  protected deleteBook(book: Book): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Delete Book',
+        message: `Are you sure you want to delete "${book.title}"?`,
+        confirmText: 'Delete',
+        cancelText: 'Cancel',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.bookService.deleteBook(book.id).subscribe({
+          next: () => {
+            this.snackBar.open('Book deleted successfully', 'Close', { duration: 3000 });
+            this.loadBooks(this.searchControl.value || '');
+          },
+          error: (err) => {
+            console.error('Error deleting book:', err);
+            this.snackBar.open('Failed to delete book', 'Close', { duration: 3000 });
+          },
+        });
+      }
+    });
   }
 }
