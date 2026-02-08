@@ -1,113 +1,136 @@
-# Backend Library
+# Library Management - UI Application
 
-A REST API for managing books, built with Spring Boot 4.0.2 and Java 25.
+A modern Angular 21 application for managing a library's book collection with Material Design components.
 
-## Prerequisites
+## Running the App Locally
 
-### Run Locally
+### Prerequisites
 
-- Java 25 (JDK) - [Eclipse Temurin](https://adoptium.net/) or [Oracle JDK](https://jdk.java.net/25/)
-- Maven 3.9+ (or use the included Maven Wrapper `./mvnw`)
+Before you begin, ensure you have the following installed:
 
-### Run with Docker
+- **Node.js** (v20 or higher) - [Download here](https://nodejs.org/)
+- **npm** (comes with Node.js) or **yarn**
+- **Angular CLI** (optional but recommended)
 
-- Docker 20.10+
-
-## Run Locally
-
-1. Clone the repository:
+### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/wiratama-p/backend-library.git
-cd backend-library
+git clone https://github.com/wiratama-p/ui-library.git
+cd ui-library
 ```
 
-2. Build the project:
+### Step 2: Install Dependencies
 
 ```bash
-./mvnw clean package
+npm install
 ```
 
-3. Run the application:
+Or if you're using yarn:
 
 ```bash
-./mvnw spring-boot:run
+yarn install
 ```
 
-The application starts on `http://localhost:8080`.
+### Step 3: Configure Backend API URL (Optional)
+
+If your backend API is not running on `http://localhost:8080`, update the API URL:
+
+**src/app/services/book.service.ts**
+```typescript
+private readonly apiUrl = 'http://your-backend-url/books';
+```
+
+Or create environment files (recommended):
+
+**src/environments/environment.ts**
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8080'
+};
+```
+
+### Step 4: Start the Development Server
+
+```bash
+npm start
+```
+
+Or using Angular CLI directly:
+
+```bash
+ng serve
+```
+
+The application will be available at:
+```
+http://localhost:4200
+```
+
+The app will automatically reload whenever you modify source files.
+
+### Step 5: Verify Backend Connection
+
+Make sure your backend API is running on `http://localhost:8080` (or the configured URL).
+
+The UI expects the following endpoints:
+- `GET /books` - List all books (with optional `?search=` parameter)
+- `GET /books/:id` - Get single book
+- `POST /books` - Create new book
+- `PUT /books/:id` - Update existing book
+- `DELETE /books/:id` - Delete book
+
+## Development Commands
+
+### Start Development Server
+```bash
+npm start                 # Start on http://localhost:4200
+ng serve --port 3000      # Start on custom port
+ng serve --open           # Start and open browser automatically
+```
+
+### Build for Production
+```bash
+npm run build             # Build for production
+ng build --configuration production
+```
+
+Build artifacts will be stored in the `dist/` directory.
 
 ### Run Tests
-
 ```bash
-./mvnw test
+npm test                  # Run unit tests with Vitest
+ng test                   # Alternative command
 ```
+  
 
-## Run with Docker
-
-1. Build the Docker image:
-
+For a complete list of available schematics:
 ```bash
-docker build -t backend-library .
+ng generate --help
 ```
 
-2. Run the container:
+### Backend Connection Issues
+1. Verify backend is running on `http://localhost:8080`
+2. Check CORS is enabled on backend for `http://localhost:4200`
+3. Check browser console for network errors
 
+### Build Errors
 ```bash
-docker run -p 8080:8080 backend-library
+# Clear cache and reinstall
+rm -rf node_modules package-lock.json
+npm install
+
+# Clear Angular cache
+rm -rf .angular
 ```
-
-The application starts on `http://localhost:8080`.
-
-## API Endpoints
-
-| Method | Endpoint       | Description                          |
-|--------|----------------|--------------------------------------|
-| POST   | /books         | Create a new book                    |
-| GET    | /books         | List all books (optional `?search=`) |
-| GET    | /books/{id}    | Get a book by ID                     |
-| PUT    | /books/{id}    | Update a book by ID                  |
-| DELETE | /books/{id}    | Delete a book by ID                  |
-
-### Request Body Example (POST / PUT)
-
-```json
-{
-  "title": "Mommyclopedia: 78 Resep MPASI",
-  "author": "dr. Meta Hanindita, Sp.A",
-  "isbn": "9786028519939",
-  "publicationYear": "2016",
-  "genre": "Parenting",
-  "description": "Kumpulan resep MPASI untuk bayi"
-}
-```
-
-### Validation Rules
-
-- `title`, `author`, `isbn`, `publicationYear`, `genre` are required (cannot be blank)
-- `isbn` must be exactly 13 digits, starting with `978` or `979`, no dashes
-- `isbn` must be unique across all books
-- `description` is optional
-
-## Tech Stack
-
-- Java 25
-- Spring Boot 4.0.2
-- Spring Data JPA
-- H2 Database (in-memory)
-- Lombok
-- Virtual Threads enabled
 
 ## Future Improvements
-- Add proper persisting DB like PostgreSQL / MySQL etc so the data wont be gone after restart
-- Create proper and unified API response (dont just pass raw data to the client)
-- Add auditing fields back (createdAt, updatedAt) using JPA @PrePersist / @PreUpdate or Spring Data's @EnableJpaAuditing 
-- Add pagination and sorting to the list endpoint using Spring Data's Pageable instead of returning all results
-- Add Spring Boot Actuator for health checks and metrics (for production ready apps)
+- Provide nginx upon cloud deployment to route for specific UI
+- Provide healthcheck and metrics for production ready apps
 
 ## AI Usage
 - Create minimal boilerplate project.
-- Ask the business domain e.g what is ISBN, proper format ISBN etc.
-- Ask for technical explanation and usage of regex
-- Create a repetitive Integration Test (which I create once / twice before)
-- Find recommendation for the lightweight base image to Dockerize the backend apps
+- Provide repetitive integration test.
+- Change minor design and such
+- Ask usage and implementation for specific library (debounce, material design etc)
 - Create prerequisites and how to run locally documents
