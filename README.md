@@ -1,59 +1,125 @@
-# UiLibrary
+# Library Management - UI Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.3.
+A modern Angular 21 application for managing a library's book collection with Material Design components.
 
-## Development server
+## Running the App Locally
 
-To start a local development server, run:
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** (v20 or higher) - [Download here](https://nodejs.org/)
+- **npm** (comes with Node.js) or **yarn**
+- **Angular CLI** (optional but recommended)
+
+### Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/wiratama-p/ui-library.git
+cd ui-library
+```
+
+### Step 2: Install Dependencies
+
+```bash
+npm install
+```
+
+Or if you're using yarn:
+
+```bash
+yarn install
+```
+
+### Step 3: Configure Backend API URL (Optional)
+
+If your backend API is not running on `http://localhost:8080`, update the API URL:
+
+**src/app/services/book.service.ts**
+```typescript
+private readonly apiUrl = 'http://your-backend-url/books';
+```
+
+Or create environment files (recommended):
+
+**src/environments/environment.ts**
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8080'
+};
+```
+
+### Step 4: Start the Development Server
+
+```bash
+npm start
+```
+
+Or using Angular CLI directly:
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+The application will be available at:
+```
+http://localhost:4200
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The app will automatically reload whenever you modify source files.
 
+### Step 5: Verify Backend Connection
+
+Make sure your backend API is running on `http://localhost:8080` (or the configured URL).
+
+The UI expects the following endpoints:
+- `GET /books` - List all books (with optional `?search=` parameter)
+- `GET /books/:id` - Get single book
+- `POST /books` - Create new book
+- `PUT /books/:id` - Update existing book
+- `DELETE /books/:id` - Delete book
+
+## Development Commands
+
+### Start Development Server
+```bash
+npm start                 # Start on http://localhost:4200
+ng serve --port 3000      # Start on custom port
+ng serve --open           # Start and open browser automatically
+```
+
+### Build for Production
+```bash
+npm run build             # Build for production
+ng build --configuration production
+```
+
+Build artifacts will be stored in the `dist/` directory.
+
+### Run Tests
+```bash
+npm test                  # Run unit tests with Vitest
+ng test                   # Alternative command
+```
+  
+
+For a complete list of available schematics:
 ```bash
 ng generate --help
 ```
 
-## Building
+### Backend Connection Issues
+1. Verify backend is running on `http://localhost:8080`
+2. Check CORS is enabled on backend for `http://localhost:4200`
+3. Check browser console for network errors
 
-To build the project run:
-
+### Build Errors
 ```bash
-ng build
+# Clear cache and reinstall
+rm -rf node_modules package-lock.json
+npm install
+
+# Clear Angular cache
+rm -rf .angular
 ```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
