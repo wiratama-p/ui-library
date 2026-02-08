@@ -1,0 +1,8 @@
+mat-toolbar {
+  gap: 8px;
+}
+
+.toolbar-title {
+  font-size: 20px;
+  font-weight: 500;
+}

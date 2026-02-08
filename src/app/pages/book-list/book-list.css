@@ -1,0 +1,114 @@
+.book-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--mat-sys-on-surface);
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+/* Loading state */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  gap: 16px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+/* Error state */
+.error-card {
+  max-width: 480px;
+  margin: 48px auto;
+}
+
+.error-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px;
+  gap: 12px;
+}
+
+.error-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: var(--mat-sys-error);
+}
+
+.retry-button {
+  margin-top: 8px;
+}
+
+/* Empty state */
+.empty-card {
+  max-width: 480px;
+  margin: 48px auto;
+}
+
+.empty-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 48px 24px;
+  gap: 12px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.empty-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  opacity: 0.6;
+}
+
+/* Table */
+.table-card-content {
+  padding: 0;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.book-title {
+  font-weight: 500;
+}
+
+.isbn {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  background: var(--mat-sys-surface-container);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+tr.mat-mdc-row:hover {
+  background-color: var(--mat-sys-surface-container-low);
+}
