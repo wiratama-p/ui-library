@@ -6,6 +6,28 @@
     </div>
   </div>
 
+  <div class="search-container">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search books</mat-label>
+      <input
+        matInput
+        [formControl]="searchControl"
+        placeholder="Search by title, author, genre..."
+      />
+      <mat-icon matPrefix>search</mat-icon>
+      @if (searchControl.value) {
+        <button
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="clearSearch()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+  </div>
+
   @if (loading()) {
     <div class="loading-container">
       <mat-spinner diameter="48"></mat-spinner>
@@ -17,7 +39,7 @@
         <div class="error-content">
           <mat-icon class="error-icon">error_outline</mat-icon>
           <p>{{ error() }}</p>
-          <button mat-button class="retry-button" (click)="reload()">
+          <button mat-raised-button color="primary" (click)="reload()">
             <mat-icon>refresh</mat-icon>
             Retry
           </button>
@@ -30,6 +52,9 @@
         <div class="empty-content">
           <mat-icon class="empty-icon">menu_book</mat-icon>
           <p>No books found</p>
+          @if (searchControl.value) {
+            <p class="empty-hint">Try adjusting your search terms</p>
+          }
         </div>
       </mat-card-content>
     </mat-card>

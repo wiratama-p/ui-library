@@ -1,4 +1,5 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -6,6 +7,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book.model';
 import { TruncatePipe } from '../../pipes/truncate.pipe';
@@ -20,17 +24,22 @@ import { TruncatePipe } from '../../pipes/truncate.pipe';
     MatChipsModule,
     MatTooltipModule,
     MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
     TruncatePipe,
   ],
   templateUrl: './book-list.html',
   styleUrl: './book-list.css',
 })
-export class BookList implements OnInit {
+export class BookList implements OnInit, OnDestroy {
   private readonly bookService = inject(BookService);
+  private readonly destroy$ = new Subject<void>();
 
   protected readonly books = signal<Book[]>([]);
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
+  protected readonly searchControl = new FormControl('');
 
   protected readonly displayedColumns: string[] = [
     'title',
@@ -43,13 +52,31 @@ export class BookList implements OnInit {
 
   ngOnInit(): void {
     this.loadBooks();
+    this.setupSearchListener();
   }
 
-  private loadBooks(): void {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private setupSearchListener(): void {
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((searchTerm) => {
+        this.loadBooks(searchTerm || '');
+      });
+  }
+
+  private loadBooks(search: string = ''): void {
     this.loading.set(true);
     this.error.set(null);
 
-    this.bookService.getBooks().subscribe({
+    this.bookService.getBooks(search).subscribe({
       next: (books) => {
         this.books.set(books);
         this.loading.set(false);
@@ -63,6 +90,10 @@ export class BookList implements OnInit {
   }
 
   protected reload(): void {
-    this.loadBooks();
+    this.loadBooks(this.searchControl.value || '');
+  }
+
+  protected clearSearch(): void {
+    this.searchControl.setValue('');
   }
 }

@@ -24,6 +24,16 @@
   color: var(--mat-sys-on-surface-variant);
 }
 
+/* Search */
+.search-container {
+  margin-bottom: 24px;
+}
+
+.search-field {
+  width: 100%;
+  max-width: 600px;
+}
+
 /* Loading state */
 .loading-container {
   display: flex;
@@ -57,10 +67,6 @@
   color: var(--mat-sys-error);
 }
 
-.retry-button {
-  margin-top: 8px;
-}
-
 /* Empty state */
 .empty-card {
   max-width: 480px;
@@ -82,6 +88,11 @@
   width: 64px;
   height: 64px;
   opacity: 0.6;
+}
+
+.empty-hint {
+  font-size: 14px;
+  margin-top: 4px;
 }
 
 /* Table */
