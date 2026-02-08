@@ -24,7 +24,6 @@
   color: var(--mat-sys-on-surface-variant);
 }
 
-/* Search */
 .search-container {
   margin-bottom: 24px;
 }
@@ -34,7 +33,6 @@
   max-width: 600px;
 }
 
-/* Loading state */
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -45,7 +43,6 @@
   color: var(--mat-sys-on-surface-variant);
 }
 
-/* Error state */
 .error-card {
   max-width: 480px;
   margin: 48px auto;
@@ -67,7 +64,6 @@
   color: var(--mat-sys-error);
 }
 
-/* Empty state */
 .empty-card {
   max-width: 480px;
   margin: 48px auto;
@@ -95,7 +91,6 @@
   margin-top: 4px;
 }
 
-/* Table */
 .table-card-content {
   padding: 0;
 }
@@ -123,6 +118,22 @@ table {
 .actions-column {
   width: 120px;
   text-align: center;
+}
+
+.edit-button {
+  color: #1976d2;
+}
+
+.edit-button:hover {
+  background-color: rgba(25, 118, 210, 0.08);
+}
+
+.delete-button {
+  color: #d32f2f;
+}
+
+.delete-button:hover {
+  background-color: rgba(211, 47, 47, 0.08);
 }
 
 tr.mat-mdc-row:hover {

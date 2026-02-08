@@ -19,7 +19,7 @@ export interface ConfirmDialogData {
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-button (click)="onCancel()">{{ data.cancelText }}</button>
-      <button mat-raised-button color="warn" (click)="onConfirm()">
+      <button mat-raised-button class="delete-confirm-button" (click)="onConfirm()">
         {{ data.confirmText }}
       </button>
     </mat-dialog-actions>
@@ -28,6 +28,15 @@ export interface ConfirmDialogData {
     `
       mat-dialog-content {
         padding: 20px 0;
+      }
+
+      .delete-confirm-button {
+        background-color: #d32f2f;
+        color: white;
+      }
+
+      .delete-confirm-button:hover {
+        background-color: #b71c1c;
       }
     `,
   ],
